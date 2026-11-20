@@ -1,9 +1,10 @@
+
 #include <stdio.h>
 #include <windows.h>
 #include "funcs.h"
 
 /**
- * @brief Зчитує та виводить початкові дані лабораторної роботи № 5.
+ * @brief Зчитує початкові дані, обчислює таблицю функції та зберігає результати у файли.
  *
  * @return 0 у разі успішного виконання, 1 у разі помилки.
  */
@@ -24,6 +25,20 @@ int main(void)
     printf("Крок: %.6f\n", data.step);
     printf("Група: %s\n", data.group);
     printf("Виконавець: %s\n", data.student);
+
+    // Побудова таблиці значень функції за вхідними даними
+    printf("\nТаблиця значень функції:\n");
+    print_function_table(&data);
+
+    // Збереження таблиці в текстовому та бінарному форматах
+    if (!write_text_file("output.txt", &data))
+        return 1;
+
+    if (!write_binary_file("output.bin", &data))
+        return 1;
+
+    printf("\nТекстовий файл output.txt створено успішно.\n");
+    printf("Бінарний файл output.bin створено успішно.\n");
 
     return 0;
 }
