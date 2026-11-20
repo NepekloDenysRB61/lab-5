@@ -57,4 +57,12 @@ int write_text_file(const char *filename, const InputData *data);
  */
 int write_binary_file(const char *filename, const InputData *data);
 
+/**
+ * @brief Зчитує таблицю з бінарного файлу у динамічний масив і виводить її.
+ *
+ * @param filename Ім'я вхідного бінарного файлу.
+ * @return 1 у разі успішного зчитування, 0 у разі помилки.
+ */
+int read_binary_file(const char *filename);
+
 #endif

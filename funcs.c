@@ -1,6 +1,7 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <string.h>
 #include <math.h>
 #include "funcs.h"
@@ -223,4 +224,79 @@ int write_binary_file(const char *filename, const InputData *data)
         printf("Помилка: не вдалося повністю записати файл %s.\n", filename);
 
     return success;
+}
+
+int read_binary_file(const char *filename)
+{
+    FILE *file;
+    int points;
+    int i;
+    size_t count;
+    double *values;
+
+    if (filename == NULL)
+        return 0;
+
+    // Відкриття бінарного файлу для читання
+    file = fopen(filename, "rb");
+    if (file == NULL)
+    {
+        printf("Помилка: не вдалося відкрити файл %s.\n", filename);
+        return 0;
+    }
+
+    // Зчитування та перевірка кількості точок
+    if (fread(&points, sizeof(points), 1, file) != 1 || points <= 0)
+    {
+        printf("Помилка: некоректна кількість точок у бінарному файлі.\n");
+        fclose(file);
+        return 0;
+    }
+
+    // Перевірка розміру перед виділенням динамічної пам'яті
+    if ((size_t)points > SIZE_MAX / (2 * sizeof(double)))
+    {
+        printf("Помилка: недостатній діапазон пам'яті для таблиці.\n");
+        fclose(file);
+        return 0;
+    }
+
+    count = (size_t)points * 2;
+    values = malloc(count * sizeof(double));
+    if (values == NULL)
+    {
+        printf("Помилка: не вдалося виділити пам'ять для таблиці.\n");
+        fclose(file);
+        return 0;
+    }
+
+    // Зчитування послідовності пар значень x та f(x)
+    if (fread(values, sizeof(double), count, file) != count ||
+        fgetc(file) != EOF || ferror(file))
+    {
+        printf("Помилка: бінарний файл містить неповні або зайві дані.\n");
+        free(values);
+        fclose(file);
+        return 0;
+    }
+
+    if (fclose(file) != 0)
+    {
+        printf("Помилка: не вдалося закрити бінарний файл.\n");
+        free(values);
+        return 0;
+    }
+
+    // Виведення таблиці, відновленої з динамічного масиву
+    printf("\nТаблиця, прочитана з бінарного файлу:\n");
+    printf("%-8s %14s %20s\n", "N", "x", "f(x)");
+
+    for (i = 0; i < points; i++)
+        printf("%-8d %14.6f %20.6f\n", i + 1,
+               values[2 * i], values[2 * i + 1]);
+
+    // Звільнення пам'яті після завершення роботи з таблицею
+    free(values);
+
+    return 1;
 }
