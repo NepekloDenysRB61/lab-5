@@ -1,0 +1,29 @@
+#include <stdio.h>
+#include <windows.h>
+#include "funcs.h"
+
+/**
+ * @brief Зчитує та виводить початкові дані лабораторної роботи № 5.
+ *
+ * @return 0 у разі успішного виконання, 1 у разі помилки.
+ */
+int main(void)
+{
+    InputData data;
+
+    SetConsoleOutputCP(CP_UTF8);
+
+    printf("Лабораторна робота № 5. Робота з файлами.\n\n");
+
+    if (!read_input_data("input.txt", &data))
+        return 1;
+
+    printf("Початкове значення x: %.6f\n", data.x_start);
+    printf("Кінцеве значення x: %.6f\n", data.x_end);
+    printf("Кількість точок: %d\n", data.points);
+    printf("Крок: %.6f\n", data.step);
+    printf("Група: %s\n", data.group);
+    printf("Виконавець: %s\n", data.student);
+
+    return 0;
+}
