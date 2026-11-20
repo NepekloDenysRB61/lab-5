@@ -1,4 +1,10 @@
 
+/**
+ * @file funcs.c
+ * @brief Реалізація функцій для обчислень та роботи з файлами.
+ * @author Непекло Денис, група РБ-61.
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>

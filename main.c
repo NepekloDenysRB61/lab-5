@@ -1,4 +1,10 @@
 
+/**
+ * @file main.c
+ * @brief Лабораторна робота № 5. Робота з файлами.
+ * @author Непекло Денис, група РБ-61.
+ */
+
 #include <stdio.h>
 #include <windows.h>
 #include "funcs.h"
